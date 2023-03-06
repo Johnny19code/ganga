@@ -1,44 +1,31 @@
 <?php
+// Start with PHPMailer class
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+require_once './vendor/autoload.php';
+// create a new object
+$mail = new PHPMailer();
+// configure an SMTP
+$mail->isSMTP();
+$mail->Host = 'smtp.mailtrap.io';
+$mail->SMTPAuth = true;
+$mail->Username = 'saichandanvanam@gmail.com';
+$mail->Password = 'Radha@123';
+$mail->SMTPSecure = 'tls';
+$mail->Port = 528;
 
-require 'PHPMailer/src/Exception.php';
-require 'PHPMailer/src/PHPMailer.php';
-require 'PHPMailer/src/SMTP.php';
-
-// Instantiation and passing `true` enables exceptions
-$mail = new PHPMailer(true);
-
-try {
-    // Server settings
-    $mail->isSMTP(); // Set mailer to use SMTP
-    $mail->Host = 'smtp.gmail.com'; // Specify main and backup SMTP servers
-    $mail->SMTPAuth = true; // Enable SMTP authentication
-    $mail->Username = 'kalyan.k@skilltechnologies.in'; // SMTP username
-    $mail->Password = 'dfeybuhgewtodznm'; // SMTP password
-    $mail->SMTPSecure = 'tls'; // Enable TLS encryption, `ssl` also accepted
-    $mail->Port = 587; // TCP port to connect to
-
-    // Recipients
-    $mail->setFrom('kalyan.k@skilltechnologies.in', 'Your Name');
-    $mail->addAddress('kalyan.k@skilltechnologies.in', 'Recipient Name'); // Add a recipient
-    $mail->addReplyTo('kalyan.k@skilltechnologies.in', 'Your Name');
-
-    // Content
-    $mail->isHTML(true); // Set email format to HTML
-    $mail->Subject = 'Test email';
-    $mail->Body    = 'This is a test email sent from PHPMailer using Gmail.';
-
-    if($mail->Send()) {
-    echo 'Email sent successfully!';
+$mail->setFrom('saichandanvanam@gmail.com', 'Your Hotel');
+$mail->addAddress('saichandanvanam@gmail.com', 'Me');
+$mail->Subject = 'Thanks for choosing Our Hotel!';
+// Set HTML 
+$mail->isHTML(TRUE);
+$mail->Body = '<html>Hi there, we are happy to <br>confirm your booking.</br> Please check the document in the attachment.</html>';
+$mail->AltBody = 'Hi there, we are happy to confirm your booking. Please check the document in the attachment.';
+// add attachment // just add the '/path/to/file.pdf', 'filename.pdf'
+$mail->addAttachment('//confirmations/yourbooking.pdf', 'yourbooking.pdf');
+// send the message
+if(!$mail->send()){
+    echo 'Message could not be sent.';
+    echo 'Mailer Error: ' . $mail->ErrorInfo;
 } else {
-    echo 'Email sending failed. Error message: '.$mail->ErrorInfo;
+    echo 'Message has been sent';
 }
-} catch (Exception $e) {
-    echo 'Message could not be sent. Error: ', $mail->ErrorInfo;
-}
-
-
-
-
-?>
